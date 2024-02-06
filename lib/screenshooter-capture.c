@@ -106,7 +106,6 @@ static GdkPixbuf       *get_rectangle_screenshot_composited (gint            del
                                                              gboolean        show_mouse);
 
 
-
 /* Internals */
 
 
@@ -895,8 +894,6 @@ static gboolean cb_motion_notify (GtkWidget *widget,
   return FALSE;
 }
 
-
-
 static GdkPixbuf
 *capture_rectangle_screenshot (gint x, gint y, gint w, gint h, gint delay, gboolean show_mouse)
 {
@@ -1066,8 +1063,6 @@ static GdkPixbuf
 
   return screenshot;
 }
-
-
 
 static GdkFilterReturn
 region_filter_func (GdkXEvent *xevent, GdkEvent *event, RbData *rbdata)
@@ -1412,8 +1407,6 @@ static GdkPixbuf
   return screenshot;
 }
 
-
-
 /* Public */
 
 
@@ -1421,7 +1414,7 @@ static GdkPixbuf
 /**
  * screenshooter_capture_screenshot:
  * @region: the region to be captured. It can be FULLSCREEN,
- *          ACTIVE_WINDOW or SELECT.
+ *          ACTIVE_WINDOW or SELECT, or FIXED.
  * @delay: the delay before the screenshot is captured, in seconds.
  * @show_mouse: whether the mouse pointer should be displayed on the
  *              screenshot.
@@ -1487,6 +1480,11 @@ G_GNUC_END_IGNORE_DEPRECATIONS
       screenshot = gdk_screen_is_composited (screen) ?
                     get_rectangle_screenshot_composited (delay, show_mouse) :
                     get_rectangle_screenshot (delay, show_mouse);
+    }
+  else if (region == FIXED)
+    {
+      TRACE ("Capture fixed region");
+      screenshot = screenshooter_pixbuf_get_from_window (gdk_get_default_root_window(), 512, 512, 132, 176);
     }
 
   return screenshot;

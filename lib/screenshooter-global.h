@@ -83,6 +83,7 @@ enum {
   FULLSCREEN,
   ACTIVE_WINDOW,
   SELECT,
+  FIXED,
 };
 
 

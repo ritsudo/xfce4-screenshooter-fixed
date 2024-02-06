@@ -31,6 +31,7 @@
 gboolean version = FALSE;
 gboolean window = FALSE;
 gboolean region = FALSE;
+gboolean bmpout = FALSE;
 gboolean fullscreen = FALSE;
 gboolean mouse = FALSE;
 gboolean no_border = FALSE;
@@ -82,6 +83,11 @@ static GOptionEntry entries[] =
     N_("Select a region to be captured by clicking a point of the screen "
        "without releasing the mouse button, dragging your mouse to the "
        "other corner of the region, and releasing the mouse button."),
+    NULL
+  },
+  {
+    "bmpscreen", 'b', G_OPTION_FLAG_IN_MAIN, G_OPTION_ARG_NONE, &bmpout,
+    N_("Select a region 132x176 by custom methods for display"),
     NULL
   },
   {
@@ -214,7 +220,7 @@ int main (int argc, char **argv)
    * non-cli mode */
   if ((application != NULL) && !(fullscreen || window || region))
     g_printerr (ignore_error, "open");
-  if ((screenshot_dir != NULL)  && !(fullscreen || window || region ))
+  if ((screenshot_dir != NULL)  && !(fullscreen || window || region || bmpout ))
     {
       g_printerr (ignore_error, "save");
       screenshot_dir = NULL;
@@ -273,7 +279,7 @@ int main (int argc, char **argv)
   sd->action_specified = FALSE;
 
   /* If a region cli option is given, take the screenshot accordingly.*/
-  if (fullscreen || window || region)
+  if (fullscreen || window || region || bmpout)
     {
       /* Set the region to be captured */
       sd->region_specified = TRUE;
@@ -282,8 +288,10 @@ int main (int argc, char **argv)
         sd->region = ACTIVE_WINDOW;
       else if (fullscreen)
         sd->region = FULLSCREEN;
-      else
+      else if (region)
         sd->region = SELECT;
+      else
+        sd->region = FIXED; //custom adding
 
       /* Whether to display the mouse pointer on the screenshot */
       mouse ? (sd->show_mouse = 1) : (sd->show_mouse = 0);
