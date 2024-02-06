@@ -1,3 +1,5 @@
+## Applied edit: added -b argument, saves region (512, 512, 132, 176) in a single file for demo purposes. Usage: xfe4-screenshooter -b -s cache.bmp
+
 [![License](https://img.shields.io/badge/License-GPL%20v2-blue.svg)](https://gitlab.xfce.org/apps/xfce4-screenshooter/-/blob/master/COPYING)
 
 # xfce4-screenshooter
